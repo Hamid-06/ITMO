@@ -1,0 +1,11 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/mainsrc/testsrc/mainsrc/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Storetarget/
+.idea/
+*.class
