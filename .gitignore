@@ -1,30 +1,11 @@
-### IntelliJ IDEA ###
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-.kotlin
-
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/mainsrc/testsrc/mainsrc/test/**/build/
 
 ### VS Code ###
 .vscode/
 
 ### Mac OS ###
-.DS_Store
+.DS_Storetarget/
+.idea/
+*.class

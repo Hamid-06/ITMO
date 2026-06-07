@@ -1,0 +1,80 @@
+мая 20, 2026 8:27:57 AM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 1
+java.lang.Throwable: Runtime.exit(1)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Runtime.exit(Runtime.java:188)
+	at java.base/java.lang.System.exit(System.java:1925)
+	at ServerMain.main(ServerMain.java:28)
+
+июн. 05, 2026 12:28:21 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 1
+java.lang.Throwable: Runtime.exit(1)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Runtime.exit(Runtime.java:188)
+	at java.base/java.lang.System.exit(System.java:1925)
+	at ServerMain.main(ServerMain.java:15)
+
+июн. 05, 2026 12:28:50 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 1
+java.lang.Throwable: Runtime.exit(1)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Runtime.exit(Runtime.java:188)
+	at java.base/java.lang.System.exit(System.java:1925)
+	at ServerMain.main(ServerMain.java:15)
+
+июн. 05, 2026 12:30:49 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 1
+java.lang.Throwable: Runtime.exit(1)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Runtime.exit(Runtime.java:188)
+	at java.base/java.lang.System.exit(System.java:1925)
+	at ServerMain.main(ServerMain.java:15)
+
+июн. 05, 2026 12:31:01 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 1
+java.lang.Throwable: Runtime.exit(1)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Runtime.exit(Runtime.java:188)
+	at java.base/java.lang.System.exit(System.java:1925)
+	at ServerMain.main(ServerMain.java:15)
+
+июн. 05, 2026 12:36:09 PM server.ServerApp start
+INFO: === Server starting on UDP port 8080 (Single-threaded) ===
+июн. 05, 2026 12:36:51 PM java.io.ObjectInputFilter$Config traceFilter
+FINER: Builtin factory: null -> new: null
+июн. 05, 2026 12:36:51 PM server.RequestReceiver receive
+INFO: Received request from /127.0.0.1:50110 | command: INFO
+июн. 05, 2026 12:36:51 PM server.RequestHandler handle
+FINE: Handling: INFO
+июн. 05, 2026 12:36:51 PM server.ResponseSender send
+INFO: Response sent to /127.0.0.1:50110 | success=true | bytes=196
+июн. 05, 2026 12:36:55 PM java.io.ObjectInputFilter$Config traceFilter
+FINER: Builtin factory: null -> new: null
+июн. 05, 2026 12:36:55 PM server.RequestReceiver receive
+INFO: Received request from /127.0.0.1:51581 | command: HELP
+июн. 05, 2026 12:36:55 PM server.RequestHandler handle
+FINE: Handling: HELP
+июн. 05, 2026 12:36:55 PM server.ResponseSender send
+INFO: Response sent to /127.0.0.1:51581 | success=true | bytes=1095
+июн. 05, 2026 12:37:00 PM java.io.ObjectInputFilter$Config traceFilter
+FINER: Builtin factory: null -> new: null
+июн. 05, 2026 12:37:00 PM server.RequestReceiver receive
+INFO: Received request from /127.0.0.1:64823 | command: SHOW
+июн. 05, 2026 12:37:00 PM server.RequestHandler handle
+FINE: Handling: SHOW
+июн. 05, 2026 12:37:00 PM server.ResponseSender send
+INFO: Response sent to /127.0.0.1:64823 | success=true | bytes=138
+июн. 05, 2026 12:37:38 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 130
+java.lang.Throwable: Runtime.exit(130)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+
