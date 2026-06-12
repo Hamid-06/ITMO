@@ -5,7 +5,7 @@ import io.Console;
 public class ClientMain {
 
     private static final String SERVER_HOST = "localhost";
-    private static final int    SERVER_PORT = 24125;
+    private static final int    SERVER_PORT = 8080;
 
     public static void main(String[] args) {
         Console console = new Console();
