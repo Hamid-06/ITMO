@@ -1,0 +1,280 @@
+@startuml
+skinparam Style strictuml
+skinparam BoxPadding 10
+skinparam ComponentStyle rectangle
+
+title Диаграмма классов — Лабораторная работа №6 «Клиент-Сервер UDP»
+
+skinparam BackgroundColor #1e1e2e
+skinparam ArrowColor #cba6f7
+skinparam ClassBorderColor #45475a
+skinparam ClassBackgroundColor #313244
+skinparam ClassFontColor #cdd6f4
+skinparam ClassAttributeFontColor #cdd6f4
+skinparam ClassAttributeIconSize 0
+skinparam StereotypeFontColor #6c7086
+
+package "Interface & System Dependencies" {
+    interface Serializable
+    interface Comparable<T> {
+        + compareTo(o: T): int
+    }
+    interface Runnable {
+        + run(): void
+    }
+}
+
+package "module::common" #1a1a2e {
+    package "models" {
+        class Route {
+            - id: Integer
+            - name: String
+            - coordinates: Coordinates
+            - creationDate: java.util.Date
+            - from: Location
+            - to: Location
+            - distance: Long
+            + compareTo(other: Route): int
+            + getId(): Integer
+            + getDistance(): Long
+            + toString(): String
+        }
+        class Coordinates {
+            - x: Float
+            - y: Long
+            + getX(): Float
+            + getY(): Long
+            + toString(): String
+        }
+        class Location {
+            - x: long
+            - y: Double
+            - z: Long
+            + getX(): long
+            + getY(): Double
+            + getZ(): Long
+        }
+    }
+    package "network" {
+        enum CommandType {
+            ADD
+            UPDATE
+            REMOVE_BY_ID
+            CLEAR
+            SHOW
+            INFO
+            HELP
+            ADD_IF_MIN
+            REMOVE_GREATER
+            REMOVE_LOWER
+            REMOVE_ANY_BY_DISTANCE
+            GROUP_COUNTING_BY_COORDINATES
+            FILTER_CONTAINS_NAME
+            EXECUTE_SCRIPT
+            EXIT
+        }
+        class CommandRequest {
+            - type: CommandType
+            - routeArg: Route
+            - stringArg: String
+            - longArg: Long
+            + getType(): CommandType
+            + getRouteArg(): Route
+            + getStringArg(): String
+            + getLongArg(): Long
+        }
+        class CommandResponse {
+            - success: boolean
+            - message: String
+            - routes: List<Route>
+            + {static} ok(message: String): CommandResponse
+            + {static} fail(message: String): CommandResponse
+            + isSuccess(): boolean
+            + getMessage(): String
+        }
+        class SerializeUtil {
+            + {static} serialize(obj: Object): byte[]
+            + {static} deserialize(bytes: byte[]): Object
+        }
+    }
+}
+
+Route ..|> Serializable
+Route ..|> Comparable
+Coordinates ..|> Serializable
+Location ..|> Serializable
+CommandType ..|> Serializable
+CommandRequest ..|> Serializable
+CommandResponse ..|> Serializable
+
+Route "1" *-- "1" Coordinates : contains >
+Route "1" *-- "2" Location : from / to >
+CommandRequest "1" o-- "1" CommandType : uses >
+CommandRequest "1" o-- "0..1" Route : encapsulates >
+CommandResponse "1" o-- "*" Route : carries >
+
+package "module::server" #1a2e1a {
+    package "server (entry + loop)" {
+        class ServerMain {
+            + {static} main(args: String[]): void
+            - {static} setupLogging(): void
+        }
+        class ServerApp {
+            - manager: CollectionManager
+            - filename: String
+            - running: volatile boolean
+            + start(): void
+            + stop(): void
+        }
+    }
+    package "server (modules)" {
+        class RequestReceiver {
+            - socket: java.net.DatagramSocket
+            + receive(): Object
+        }
+        class RequestHandler {
+            - commands: Map<CommandType, Command>
+            + handle(request: CommandRequest): CommandResponse
+        }
+        class ResponseSender {
+            - socket: java.net.DatagramSocket
+            + send(response: CommandResponse, address: InetAddress, port: int): void
+        }
+        class ServerCommandManager {
+            + run(): void
+        }
+    }
+    package "commands" {
+        interface Command {
+            + execute(request: CommandRequest): CommandResponse
+            + getName(): String
+        }
+        class "15 Concrete Commands\n(AddCommand, ShowCommand, etc.)" as ConcreteCommands {
+            + execute(request: CommandRequest): CommandResponse
+            + getName(): String
+        }
+    }
+    package "managers" {
+        class CollectionManager {
+            - collection: TreeSet<Route>
+            - initDate: java.time.LocalDateTime
+            - idGenerator: IdGenerator
+            + add(route: Route): void
+            + update(id: int, route: Route): boolean
+            + removeById(id: int): boolean
+            + clear(): void
+            + addIfMin(route: Route): void
+            + removeGreater(route: Route): int
+            + removeLower(route: Route): int
+            + removeAnyByDistance(distance: Long): boolean
+            + filterByName(name: String): List<Route>
+            + groupByCoordinates(): Map<String, Long>
+            + getAllSorted(): List<Route>
+            + getInfo(): String
+        }
+        class IdGenerator {
+            - usedIds: Set<Integer>
+            - counter: int
+            + generateId(): int
+            + markUsed(id: int): void
+            + release(id: int): void
+            + reset(): void
+        }
+    }
+    package "io / util (server)" {
+        class XmlReader {
+            + load(filename: String, manager: CollectionManager): void
+        }
+        class XmlWriter {
+            + save(filename: String, collection: TreeSet<Route>): void
+        }
+        class XmlUtil {
+            + {static} serialize(collection: TreeSet<Route>): String
+            + {static} deserialize(xml: String): List<Route>
+        }
+    }
+}
+
+ServerMain ..> ServerApp : creates & launches >
+ServerApp "1" *-- "1" CollectionManager : maintains >
+ServerCommandManager ..|> Runnable
+ConcreteCommands ..|> Command
+RequestHandler "1" *-- "*" Command : dispatches to >
+CollectionManager "1" *-- "1" IdGenerator : delegates ID generation >
+CollectionManager "1" *-- "*" Route : stores >
+
+ServerApp ..> RequestReceiver : utilizes >
+ServerApp ..> RequestHandler : utilizes >
+ServerApp ..> ResponseSender : utilizes >
+
+package "module::client" #2e1a1a {
+    class ClientMain {
+        ~ {static} SERVER_HOST: String = "localhost"
+        ~ {static} SERVER_PORT: int = 8080
+        + {static} main(args: String[]): void
+    }
+    package "client" {
+        class ClientApp {
+            - console: Console
+            - input: InputHandler
+            - sender: CommandSender
+            - responseHandler: ResponseHandler
+            - runningScripts: Set<String>
+            + run(): void
+            + processLine(line: String): boolean
+            - sendAndPrint(request: CommandRequest): void
+            - executeScript(filename: String): void
+        }
+        class CommandSender {
+            - serverAddress: java.net.InetSocketAddress
+            + send(request: CommandRequest): CommandResponse
+        }
+        class ResponseHandler {
+            + handle(response: CommandResponse): void
+        }
+    }
+    package "io (client)" {
+        class Console {
+            - scanner: java.util.Scanner
+            + readLine(): String
+            + print(str: String): void
+            + println(str: String): void
+            + error(str: String): void
+            + setScanner(scanner: java.util.Scanner): void
+        }
+        class InputHandler {
+            - console: Console
+            + readNonEmpty(label: String): String
+            + readFloat(label: String): Float
+            + readLong(label: String): Long
+            + readLongNullable(label: String): Long
+            + readDouble(label: String): Double
+            + readConfirm(label: String): boolean
+        }
+    }
+    package "readers" {
+        class RouteReader {
+            - input: InputHandler
+            + read(): Route
+            - readLocation(): Location
+        }
+    }
+}
+
+ClientMain ..> ClientApp : creates & launches >
+ClientApp "1" *-- "1" Console
+ClientApp "1" *-- "1" InputHandler
+ClientApp "1" *-- "1" CommandSender
+ClientApp "1" *-- "1" ResponseHandler
+InputHandler "1" *-- "1" Console
+RouteReader "1" *-- "1" InputHandler
+
+CommandSender ..> SerializeUtil : invokes >
+RequestReceiver ..> SerializeUtil : invokes >
+ResponseSender ..> SerializeUtil : invokes >
+
+CommandSender ..> CommandRequest : sends >
+RequestReceiver ..> CommandRequest : receives >
+ResponseSender ..> CommandResponse : sends >
+CommandSender ..> CommandResponse : receives >
+@endum
