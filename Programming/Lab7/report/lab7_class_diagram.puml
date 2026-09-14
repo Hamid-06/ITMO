@@ -1,0 +1,144 @@
+@startuml
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName "Arial"
+skinparam classFontSize 12
+skinparam classAttributeFontSize 10
+skinparam classBorderColor #304B69
+skinparam classBackgroundColor #F6F9FC
+skinparam packageBorderColor #7A8A9A
+skinparam packageBackgroundColor #FFFFFF
+skinparam ArrowColor #465A70
+
+title Лабораторная работа №7\nОсновные классы клиент-серверного приложения
+
+package common {
+  package models {
+    class Coordinates {
+      - x : Float
+      - y : Long
+    }
+    class Location {
+      - x : Long
+      - y : Double
+      - z : Long
+    }
+    class RouteData {
+      - name : String
+      - coordinates : Coordinates
+      - from : Location
+      - to : Location
+      - distance : Long
+    }
+    class Route {
+      - id : Integer
+      - creationDate : Date
+      - ownerId : Integer
+      + compareTo(Route) : int
+    }
+    RouteData *-- Coordinates
+    RouteData *-- Location
+    Route *-- Coordinates
+    Route *-- Location
+    Route ..> RouteData : validates fields
+  }
+  package network {
+    enum CommandType
+    class Credentials {
+      - login : String
+      - password : String
+    }
+    class CommandRequest {
+      - requestId : UUID
+      - type : CommandType
+      - credentials : Credentials
+    }
+    class CommandResponse {
+      - status : Status
+      - message : String
+      - routes : List<Route>
+    }
+    class UdpProtocol {
+      + split(UUID, byte[]) : List<byte[]>
+      + decode(byte[]) : Packet
+    }
+    CommandRequest --> CommandType
+    CommandRequest *-- Credentials
+    CommandResponse o-- Route
+    CommandRequest ..> RouteData
+  }
+}
+
+package client {
+  class ClientMain
+  class ClientApp
+  class CommandSender
+  class InputStack
+  class RouteReader
+  ClientMain --> CommandSender
+  ClientMain --> ClientApp
+  ClientApp --> CommandSender
+  ClientApp --> InputStack
+  ClientApp --> RouteReader
+  CommandSender --> UdpProtocol
+  RouteReader --> RouteData
+}
+
+package server {
+  class ServerMain
+  class UdpServer {
+    - reader : Thread
+    - processing : ExecutorService
+    - sending : ExecutorService
+  }
+  class RequestHandler
+  class RequestJournal
+  class CommandRegistry
+  interface ServerCommand
+  class CollectionService {
+    - routes : synchronized NavigableSet<Route>
+    - byId : Map<Integer, Route>
+  }
+  class AuthService
+  class PasswordHasher
+  interface RouteRepository
+  class PostgresRouteRepository
+  interface UserRepository
+  class PostgresUserRepository
+  class Database
+  class DbConfig
+  class JdbcConnectionFactory
+
+  ServerMain --> DbConfig
+  ServerMain --> UdpServer
+  UdpServer --> RequestHandler
+  UdpServer --> UdpProtocol
+  UdpServer --> RequestJournal
+  RequestHandler --> AuthService
+  RequestHandler --> CommandRegistry
+  RequestHandler --> RequestJournal
+  CommandRegistry --> ServerCommand
+  CommandRegistry --> CollectionService
+  CollectionService --> RouteRepository
+  CollectionService --> Route
+  AuthService --> UserRepository
+  AuthService --> PasswordHasher
+  PostgresRouteRepository ..|> RouteRepository
+  PostgresUserRepository ..|> UserRepository
+  PostgresRouteRepository --> Database
+  PostgresUserRepository --> Database
+  JdbcConnectionFactory --> DbConfig
+  Database --> JdbcConnectionFactory
+}
+
+CommandSender ..> UdpServer : UDP
+RouteRepository ..> PostgreSQL
+UserRepository ..> PostgreSQL
+note right of CollectionService
+  INSERT/UPDATE/DELETE сначала
+  фиксируются в БД.
+  Память изменяется только
+  после успешного commit.
+end note
+@enduml
