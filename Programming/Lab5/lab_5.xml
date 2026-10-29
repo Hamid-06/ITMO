@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+  <route>
+    <id>1</id>
+    <name>hds</name>
+    <coordinates>
+      <x>12.0</x>
+      <y>12</y>
+    </coordinates>
+    <creationDate>2026-04-22T07:10:14</creationDate>
+    <from>
+      <x>12</x>
+      <y>12.0</y>
+      <z>12</z>
+    </from>
+    <to>
+      <x>21</x>
+      <y>12.0</y>
+      <z>12</z>
+    </to>
+  </route>
+</routes>

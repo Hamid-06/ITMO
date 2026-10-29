@@ -1,0 +1,26 @@
+# Сначала выполните login или register в клиенте.
+add
+Москва — Петербург
+0
+1
+2
+3.5
+4
+n
+700
+add
+Короткий маршрут
+10
+20
+30
+40.5
+50
+y
+60
+70.5
+80
+100
+show
+info
+group_counting_by_coordinates
+filter_contains_name маршрут
