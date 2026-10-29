@@ -1,0 +1,142 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  max-width: 720px;
+  margin: 32px auto;
+  padding: 0 16px;
+  background: #f3f5f8;
+  color: #253247;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
+
+#header {
+  margin-bottom: 24px;
+  font-family: Georgia, serif;
+  color: #24466b;
+  font-size: 18px;
+  text-align: center;
+}
+
+#header h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+#header p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.block {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: white;
+  border: 1px solid #dce3ec;
+  border-radius: 6px;
+}
+
+h2 {
+  margin: 0 0 16px;
+  font-size: 20px;
+}
+
+#canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid #c9d4e2;
+}
+
+.form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.form > div {
+  margin-bottom: 14px;
+}
+
+.form label[for], .form p {
+  display: block;
+  margin: 0 0 6px;
+  font-weight: bold;
+}
+
+input[type="text"], select {
+  width: 100%;
+  margin: 4px 0;
+  padding: 9px 10px;
+  border: 1px solid #b8c6d8;
+  border-radius: 4px;
+  background: white;
+  color: inherit;
+  font: inherit;
+}
+
+.radio-options label {
+  display: inline-block;
+  margin: 4px 12px 4px 0;
+  cursor: pointer;
+}
+
+input[type="radio"] {
+  margin: 0 4px 0 0;
+  accent-color: #2865a4;
+}
+
+button {
+  margin-top: 4px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 4px;
+  background: #2865a4;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1e4f83;
+}
+
+input:focus-visible, select:focus-visible, button:focus-visible {
+  outline: 2px solid #2865a4;
+  outline-offset: 2px;
+}
+
+#message {
+  margin: 16px 0 0;
+}
+
+#message:empty {
+  display: none;
+}
+
+.results {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 460px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th, td {
+  border: 1px solid #dce3ec;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background: #edf3fa;
+}
+
+tbody tr:nth-child(even) {
+  background: #f7f9fc;
+}

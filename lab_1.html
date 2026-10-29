@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Проверка точки</title>
+  <link rel="stylesheet" href="lab1.css">
+  <script src="lab1.js" defer></script>
+</head>
+<body>
+  <header id="header">
+    <h1>Lab_1 Проверка точки</h1>
+    <p>ФИО: Розметов Хамидходжа | Группа: Р-3207 | Вариант: 12624</p>
+  </header>
+
+  <div class="block">
+    <h2>Область</h2>
+    <canvas id="canvas" width="400" height="400"></canvas>
+  </div>
+
+  <div class="block">
+    <h2>Введите координаты</h2>
+
+    <form id="form" class="form">
+      <div>
+        <label for="x">X (от −5 до 3):</label>
+        <input type="text" id="x" name="x">
+      </div>
+
+      <div>
+        <label for="y">Y:</label>
+        <select id="y" name="y">
+          <option value="">Выберите Y</option>
+          <option value="-5">−5</option>
+          <option value="-4">−4</option>
+          <option value="-3">−3</option>
+          <option value="-2">−2</option>
+          <option value="-1">−1</option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+
+      <div class="radio-options">
+        <p>R:</p>
+        <label><input type="radio" name="r" value="1"> 1</label>
+        <label><input type="radio" name="r" value="1.5"> 1.5</label>
+        <label><input type="radio" name="r" value="2"> 2</label>
+        <label><input type="radio" name="r" value="2.5"> 2.5</label>
+        <label><input type="radio" name="r" value="3"> 3</label>
+      </div>
+
+      <button type="submit">Проверить</button>
+    </form>
+
+    <p id="message"></p>
+  </div>
+
+  <div class="block results">
+    <h2>Результаты</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>X</th>
+          <th>Y</th>
+          <th>R</th>
+          <th>Попадание</th>
+          <th>Дата и время</th>
+        </tr>
+      </thead>
+      <tbody id="results"></tbody>
+    </table>
+  </div>
+</body>
+</html>
